@@ -54,14 +54,11 @@ export class ClienteListaComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.listarTodosSemFiltro();
+    this.listarTodosFiltro();
   }
 
-  teste() {
-    alert('')
-  }
-  
-  listarTodosSemFiltro() {
+
+  listarTodosFiltro() {
 
     console.log("aq");
 
@@ -98,7 +95,7 @@ export class ClienteListaComponent implements OnInit, AfterViewInit {
   paginar(event: PageEvent) {
     this.pagina = event.pageIndex;
     this.tamanho = event.pageSize
-    this.listarTodosSemFiltro();
+    this.listarTodosFiltro();
   }
 
   isAllSelected() {
