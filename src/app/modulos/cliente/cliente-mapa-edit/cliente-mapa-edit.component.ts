@@ -130,14 +130,6 @@ export class ClienteMapaEditComponent implements OnInit {
       data: coordenada
     });
 
-    dialogMapa.componentInstance.retornoEmitter.subscribe((resultado: any) => {
-      console.log('Resultado do getTeste:', resultado);
-
-    });
-
-    dialogMapa.afterClosed().subscribe((resultado: Coordenada) => {
-      console.log('Resultado do getTeste: afterClosed', resultado);
-    });
 
   }
 
@@ -148,37 +140,53 @@ export class ClienteMapaEditComponent implements OnInit {
       this.enderecoPesquisar == undefined) {
       alert("Informe o endereço: (Nome rua, Nº rua, Bairro, Cidade ou CEP) ")
     } else {
-      const mapElement = document.getElementById("nova-coordenada");
-      if (mapElement) {
-        let loader = new Loader({
-          apiKey: environment.tokenGoogleMaps
-        })
-        loader.load().then(() => {
-          const geocoder = new google.maps.Geocoder();
-          geocoder.geocode({ address: this.enderecoPesquisar }, (results, status) => {
-            if (status === google.maps.GeocoderStatus.OK) {
-              if (results != null) {
-                const localizacao = results[0].geometry.location;
-                this.coordenadaObtida = '' + localizacao;
-                alert('coordenadaObtida' + this.coordenadaObtida)
-                const localizacaoMapa = new google.maps.Map(mapElement, {
-                  center: localizacao,
-                  zoom: 16,
-                });
-                const marcarLocalizacaoNoMapa = new google.maps.Marker({
-                  position: localizacao,
-                  map: localizacaoMapa,
-                  title: "Localização Obtida",
-                });
-                const localizacaoFormatada = this.coordenadaObtida.replace(/\)/g, '').replace(/\(/g, '');
-              }
-            } else {
-              console.error("Geocodificação falhou devido a: " + status);
-              alert("Geocodificação falhou devido a: " + status)
+
+      let loader = new Loader({
+        apiKey: environment.tokenGoogleMaps
+      })
+
+      loader.load().then(() => {
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ address: this.enderecoPesquisar }, (results, status) => {
+          if (status === google.maps.GeocoderStatus.OK) {
+            if (results != null) {
+              const localizacao = results[0].geometry.location;
+              this.coordenadaObtida = '' + localizacao;
+
+              const valores = this.coordenadaObtida.slice(1, -1).split(',');
+              const latitudeObtida = parseFloat(valores[0].trim());
+              const longitudeObtida = parseFloat(valores[1].trim());
+
+              const coordenadaObtida: Coordenada = new Coordenada;
+              coordenadaObtida.latitude = latitudeObtida;
+              coordenadaObtida.longitude = longitudeObtida;
+
+              this.cliente.latitude = coordenadaObtida.latitude;
+              this.cliente.longitude = coordenadaObtida.longitude;
+
+
+              this.snackBar.open("Coordenada Obtida: Latitude: " + latitudeObtida + " - Longitude: " + longitudeObtida + " - Favor conferrir no mapa!", "OK!", {
+                duration: 3000
+              });
+
+
+              const dialogMapa = this.dialogMostrarMapa.open(ClienteMapaVisualizarComponent, {
+                height: '520px',
+                width: '450px',
+                data: coordenadaObtida
+              });
+
             }
-          });
+          } else {
+            console.error("Geocodificação falhou devido a: " + status);
+
+            this.snackBar.open("Geocodificação falhou devido a: " + status, "OK!", {
+              duration: 3000
+            });
+          }
         });
-      }
+      });
+
     }
   }
 

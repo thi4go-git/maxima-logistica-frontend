@@ -113,13 +113,6 @@
                                     [(ngModel)]="cliente.longitude" disabled="true" />
                             </mat-form-field>
 
-                            <button type="button" class="btn btn-success espaco"
-                                (click)="abrirEnderecoClienteNoMapa(cliente)">
-                                <i class="fa fa-save"></i>
-                                <mat-icon>search</mat-icon>
-                                Visualizar MAPA
-                            </button>
-
                             <hr />
 
                             <mat-card-header>
@@ -143,16 +136,19 @@
                                 Buscar Nova coordenada
                             </button>
 
-                            <div class="mapa" id="nova-coordenada">
-
-                            </div>
-
-
+                            <hr />
 
                         </mat-card-subtitle>
                     </mat-card-header>
 
+                    <button type="button" class="btn btn-success espaco" (click)="abrirEnderecoClienteNoMapa(cliente)">
+                        <i class="fa fa-save"></i>
+                        <mat-icon>search</mat-icon>
+                        Visualizar Coordenadas no MAPA
+                    </button>
+
                 </mat-card>
+
             </div>
         </div>
     </form>
