@@ -201,6 +201,9 @@ export class ClienteMapaEditComponent implements OnInit {
         next: (resposta) => {
           this.mostraProgresso = false;
           this.cliente = resposta;
+          this.snackBar.open("SUCESSO ao Atualizar Cliente", "SUCESSO!", {
+            duration: 2000
+          });
         },
         error: (errorResponse) => {
           console.log(errorResponse);
