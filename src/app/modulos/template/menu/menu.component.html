@@ -1,0 +1,44 @@
+<div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+
+            <div class="nav">
+
+                <a class="nav-link active" href="#">
+                    <mat-icon>home</mat-icon>
+                    Início
+                </a>
+
+                <div class="sb-sidenav-menu-heading"> Versão: {{versao}} </div>
+                <a class="nav-link active" href="#">
+                    <mat-icon>description</mat-icon>
+                    Cadastro
+                </a>
+                <a class="nav-link active" href="#">
+                    <mat-icon>description</mat-icon>
+                    Lista
+                </a>
+
+                <div class="sb-sidenav-menu-heading">Logout</div>
+                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseLayouts"
+                    aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div class="cursorMao">
+                        <mat-icon class="cursorMao">exit_to_app</mat-icon>
+                        Sair
+                    </div>
+                </a>
+
+            </div>
+
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">
+                <mat-icon>perm_identity</mat-icon>
+                Usuário logado:
+            </div>
+        </div>
+    </nav>
+</div>

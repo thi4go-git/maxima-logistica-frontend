@@ -1,0 +1,29 @@
+table {
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.espaco {
+    margin: 10px;
+}
+
+.espaco-filter {
+    margin: 5px;
+}
+
+td,
+th {
+    width: 25%;
+}
+
+.cursorMao {
+    cursor: pointer;
+    color: blue;
+}
+
+.progress {
+    height: 35px;
+}

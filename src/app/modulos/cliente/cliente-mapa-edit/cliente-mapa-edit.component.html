@@ -1,0 +1,127 @@
+<p>
+    <mat-toolbar>
+        <span>
+            <mat-icon>list</mat-icon>
+            <div>
+
+            </div>
+            <div *ngIf="cliente.id">
+                Editar Cliente
+            </div>
+            <div *ngIf="!cliente.id">
+                Cadastrar Cliente
+            </div>
+
+        </span>
+    </mat-toolbar>
+</p>
+
+<div *ngIf="mostraProgresso">
+    Aguarde Processando arquivos...
+    <mat-progress-bar mode="indeterminate" class="progress">
+    </mat-progress-bar>
+</div>
+
+<div class="container">
+    <form #arquivoForm="ngForm" (ngSubmit)="onSubmit()">
+
+        <div id="row">
+            <div id="col-md-12">
+                <div class="alert alert-danger" role="alert" *ngFor="let erro of listaErros">
+                    {{ erro }}
+                </div>
+            </div>
+        </div>
+
+        <div id="row">
+
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-icon matSuffix>fingerprint</mat-icon>
+                <mat-label> <b>ID:</b> </mat-label>
+                <input matInput placeholder="Informe o ID:" name="id" [(ngModel)]="cliente.id" disabled="true" />
+            </mat-form-field>
+
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-icon matSuffix>fingerprint</mat-icon>
+                <mat-label> <b>CNPJ:</b> </mat-label>
+                <input matInput placeholder="Informe o CNPJ:" name="cnpj" [(ngModel)]="cliente.cnpj" disabled="true" />
+            </mat-form-field>
+
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-icon matSuffix>confirmation_number</mat-icon>
+                <mat-label> <b>Nome</b> </mat-label>
+                <input matInput placeholder="Informe o Nome do Cliente" name="nome" [(ngModel)]="cliente.nome" />
+            </mat-form-field>
+
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-icon matSuffix>confirmation_number</mat-icon>
+                    <mat-label> <b>CEP</b> </mat-label>
+                    <input matInput placeholder="Informe o CEP do Cliente" name="cep" [(ngModel)]="cliente.cep" />
+                </mat-form-field>
+                <button type="button" class="btn btn-success espaco" (click)="pesquisarEnderecoViaCep(cliente.cep)">
+                    <i class="fa fa-save"></i>
+                    <mat-icon>search</mat-icon>
+                    Pesquisar VIA CEP
+                </button>
+            </div>
+
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-icon matSuffix>confirmation_number</mat-icon>
+                <mat-label> <b>Logradouro</b> </mat-label>
+                <input matInput placeholder="Informe o logradouro do Cliente" name="logradouro"
+                    [(ngModel)]="cliente.logradouro" />
+            </mat-form-field>
+
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-icon matSuffix>confirmation_number</mat-icon>
+                <mat-label> <b>Bairro</b> </mat-label>
+                <input matInput placeholder="Informe o bairro do Cliente" name="bairro" [(ngModel)]="cliente.bairro" />
+            </mat-form-field>
+
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-icon matSuffix>confirmation_number</mat-icon>
+                <mat-label> <b>Localidade</b> </mat-label>
+                <input matInput placeholder="Informe a localidade do Cliente" name="localidade"
+                    [(ngModel)]="cliente.localidade" />
+            </mat-form-field>
+
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-icon matSuffix>confirmation_number</mat-icon>
+                <mat-label> <b>UF</b> </mat-label>
+                <input matInput placeholder="Informe a uf do Cliente" name="uf" [(ngModel)]="cliente.uf" />
+            </mat-form-field>
+
+            <div class="mapa">
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title>MAPA</mat-card-title>
+                        <mat-card-subtitle>
+                            <mat-form-field class="espaco" appearance="fill">
+                                <mat-icon matSuffix>fingerprint</mat-icon>
+                                <mat-label> <b>Latitude</b> </mat-label>
+                                <input matInput placeholder="Informe a latitude:" name="latitude"
+                                    [(ngModel)]="cliente.latitude" disabled="true" />
+                            </mat-form-field>
+
+                            <mat-form-field class="espaco" appearance="fill">
+                                <mat-icon matSuffix>fingerprint</mat-icon>
+                                <mat-label> <b>Longitude:</b> </mat-label>
+                                <input matInput placeholder="Informe a longitude:" name="longitude"
+                                    [(ngModel)]="cliente.longitude" disabled="true" />
+                            </mat-form-field>
+
+                        </mat-card-subtitle>
+                    </mat-card-header>
+
+                    <mat-card-actions>
+
+                  edi
+
+                    </mat-card-actions>
+
+                </mat-card>
+            </div>
+        </div>
+    </form>
+</div>

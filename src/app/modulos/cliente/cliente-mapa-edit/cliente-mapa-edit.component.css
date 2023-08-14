@@ -1,0 +1,17 @@
+.cursorMao {
+    cursor: pointer;
+}
+
+.full-width {
+    width: 100%;
+}
+
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.espaco {
+    margin: 10px;
+}

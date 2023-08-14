@@ -1,0 +1,8 @@
+version: "3"
+services:
+  maxima-logistica-frontend:
+    container_name: maxima-logistica-frontend
+    image: maxima-logistica-frontend:lts
+    ports:
+      - 3003:80
+    restart: always
