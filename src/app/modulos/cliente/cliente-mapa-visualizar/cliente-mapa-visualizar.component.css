@@ -1,0 +1,12 @@
+.mapa {
+    width: 400px;
+    height: 300px;
+    border: 2px solid #333;
+    padding: 10px;
+
+}
+
+.container {
+    align-items: center;
+    align-content: center;
+}

@@ -22,8 +22,13 @@
                 <div class="espaco-filter">
                     <mat-form-field appearance="fill" class="espaco-filter">
                         <mat-icon matSuffix>fingerprint</mat-icon>
-                        <mat-label> <b>Cliente</b> </mat-label>
+                        <mat-label> <b>Nome: </b> </mat-label>
                         <input matInput placeholder="Cliente" name="nome" [(ngModel)]="clienteFilter.nome" />
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="espaco-filter">
+                        <mat-icon matSuffix>fingerprint</mat-icon>
+                        <mat-label> <b>CNPJ:</b> </mat-label>
+                        <input matInput placeholder="Cliente" name="cnpj" [(ngModel)]="clienteFilter.cnpj" />
                     </mat-form-field>
                 </div>
 

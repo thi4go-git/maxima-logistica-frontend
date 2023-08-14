@@ -110,15 +110,14 @@
                                 <input matInput placeholder="Informe a longitude:" name="longitude"
                                     [(ngModel)]="cliente.longitude" disabled="true" />
                             </mat-form-field>
-
+                            <button type="button" class="btn btn-success espaco"
+                                (click)="abrirEnderecoClienteNoMapa(cliente)">
+                                <i class="fa fa-save"></i>
+                                <mat-icon>search</mat-icon>
+                                Visualizar MAPA
+                            </button>
                         </mat-card-subtitle>
                     </mat-card-header>
-
-                    <mat-card-actions>
-
-                  edi
-
-                    </mat-card-actions>
 
                 </mat-card>
             </div>

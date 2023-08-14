@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Loader } from '@googlemaps/js-api-loader';
 import { ClienteDTOResourceList } from 'src/app/entity/clienteDDTOResourceList';
 import { EnderecoDTOViacep } from 'src/app/entity/enderecoViaCepDTO';
 import { AvisosDialogService } from 'src/app/servicos/avisos-dialog.service';
 import { ClienteService } from 'src/app/servicos/cliente.service';
 import { EnderecoService } from 'src/app/servicos/endereco.service';
-import { environment } from 'src/environments/environment';
+import { ClienteMapaVisualizarComponent } from '../cliente-mapa-visualizar/cliente-mapa-visualizar.component';
+import { Coordenada } from 'src/app/entity/coordenada';
 
 @Component({
   selector: 'app-cliente-mapa-edit',
@@ -33,6 +34,7 @@ export class ClienteMapaEditComponent implements OnInit {
     private enderecoService: EnderecoService,
     private snackBar: MatSnackBar,
     private avisoDialogService: AvisosDialogService,
+    private dialogMostrarMapa: MatDialog
   ) {
   }
 
@@ -56,7 +58,7 @@ export class ClienteMapaEditComponent implements OnInit {
           .buscarPeloCnpj(this.cnpj).subscribe({
             next: (resposta) => {
               this.cliente = resposta;
-              this.mostraProgresso = false;          
+              this.mostraProgresso = false;
             },
             error: (errorResponse) => {
               console.log(errorResponse);
@@ -108,5 +110,25 @@ export class ClienteMapaEditComponent implements OnInit {
       });
   }
 
+
+  abrirEnderecoClienteNoMapa(cliente: ClienteDTOResourceList) {
+
+
+    const latNumber: number = Number(cliente.latitude);
+    const longNumber: number = Number(cliente.longitude);
+
+    const coordenada = new Coordenada();
+    coordenada.latitude = latNumber
+    coordenada.longitude = longNumber;
+
+    const enderecoMapa = this.dialogMostrarMapa.open(ClienteMapaVisualizarComponent, {
+      height: '400px',
+      width: '500px',
+      data: coordenada
+    });
+
+
+
+  }
 
 }
