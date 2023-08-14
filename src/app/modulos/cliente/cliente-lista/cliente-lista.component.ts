@@ -27,7 +27,7 @@ export class ClienteListaComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = [
     'id', 'nome', 'cnpj', 'cep', 'logradouro', 'bairro', 'localidade', 'uf',
-    'latitude', 'longitude', 'edit'
+    'latitude', 'longitude', 'edit', 'del'
   ];
 
 
@@ -59,10 +59,6 @@ export class ClienteListaComponent implements OnInit, AfterViewInit {
 
 
   listarTodosFiltro() {
-
-    console.log("aq");
-
-    console.log(this.clienteFilter);
 
     this.mostraProgresso = true;
 
@@ -122,6 +118,38 @@ export class ClienteListaComponent implements OnInit, AfterViewInit {
 
   verMapaEEditar(cliente: Cliente) {
     this.router.navigate(['/cliente/mapa-edit/' + cliente.cnpj]);
+  }
+
+  dialogExclusao(cliente: Cliente) {
+    this.avisoDialogService.openConfirmationDialog("Confirma a Exclusão do Cliente CNPJ '"
+      + cliente.cnpj + "' ?")
+      .then(result => {
+        if (result) {
+          this.deletarCliente(cliente.cnpj);
+        } else {
+          this.snackBar.open("EXCLUSÃO Cancelada!", "Cancelado!", {
+            duration: 3000
+          });
+        }
+      });
+  }
+
+  deletarCliente(cnpj: string) {
+    this.service.deletarCliente(cnpj)
+      .subscribe({
+        next: (resposta) => {
+          this.snackBar.open("Sucesso ao excluir Cliente!", "SUCESSO!", {
+            duration: 3000
+          });
+          this.listarTodosFiltro();
+        },
+        error: (errorResponse) => {
+          console.log(errorResponse);
+          this.snackBar.open("Erro ao excluir Cliente!", "ERRO!", {
+            duration: 3000
+          });
+        }
+      });
   }
 
 }

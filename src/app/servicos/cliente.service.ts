@@ -30,4 +30,8 @@ export class ClienteService {
   atualizarCliente(cliente: ClienteDTOResourceList): Observable<ClienteDTOResourceList> {
     return this.http.put<ClienteDTOResourceList>(this.apiCliente + '/' + cliente.cnpj, cliente);
   }
+
+  deletarCliente(cnpj: string): Observable<any> {
+    return this.http.delete<ClienteDTOResourceList>(this.apiCliente + '/' + cnpj);
+  }
 }
