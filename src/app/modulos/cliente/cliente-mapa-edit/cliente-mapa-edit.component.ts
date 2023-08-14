@@ -130,7 +130,7 @@ export class ClienteMapaEditComponent implements OnInit {
       data: coordenada
     });
 
-
+    this.visualizarMapa();
   }
 
 
@@ -157,23 +157,11 @@ export class ClienteMapaEditComponent implements OnInit {
               const latitudeObtida = parseFloat(valores[0].trim());
               const longitudeObtida = parseFloat(valores[1].trim());
 
-              const coordenadaObtida: Coordenada = new Coordenada;
-              coordenadaObtida.latitude = latitudeObtida;
-              coordenadaObtida.longitude = longitudeObtida;
+              this.cliente.latitude = latitudeObtida;
+              this.cliente.longitude = longitudeObtida;
 
-              this.cliente.latitude = coordenadaObtida.latitude;
-              this.cliente.longitude = coordenadaObtida.longitude;
-
-
-              this.snackBar.open("Coordenada Obtida: Latitude: " + latitudeObtida + " - Longitude: " + longitudeObtida + " - Favor conferrir no mapa!", "OK!", {
-                duration: 3000
-              });
-
-
-              const dialogMapa = this.dialogMostrarMapa.open(ClienteMapaVisualizarComponent, {
-                height: '520px',
-                width: '450px',
-                data: coordenadaObtida
+              this.snackBar.open("Coordenada Obtida: Latitude: " + latitudeObtida + " - Longitude: " + longitudeObtida + " - Favor conferir no mapa!", "OK!", {
+                duration: 4000
               });
 
             }
@@ -188,6 +176,40 @@ export class ClienteMapaEditComponent implements OnInit {
       });
 
     }
+  }
+
+
+  visualizarMapa() {
+    const coordenadaObtida: Coordenada = new Coordenada;
+    coordenadaObtida.latitude = Number(this.cliente.latitude);
+    coordenadaObtida.longitude = Number(this.cliente.longitude);
+    const dialogMapa = this.dialogMostrarMapa.open(ClienteMapaVisualizarComponent, {
+      height: '520px',
+      width: '450px',
+      data: coordenadaObtida
+    });
+  }
+
+
+  atualizarCliente() {
+    this.mostraProgresso = true;
+    if (this.cliente.cep) {
+      this.cliente.cep = this.cliente.cep.replaceAll("-", "");
+    }
+    this.clienteService
+      .atualizarCliente(this.cliente).subscribe({
+        next: (resposta) => {
+          this.mostraProgresso = false;
+          this.cliente = resposta;
+        },
+        error: (errorResponse) => {
+          console.log(errorResponse);
+          this.snackBar.open("Erro ao Atualizar Cliente", "ERRO!", {
+            duration: 2000
+          });
+          this.mostraProgresso = false;
+        }
+      });
   }
 
 

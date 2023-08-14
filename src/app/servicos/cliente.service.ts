@@ -23,8 +23,11 @@ export class ClienteService {
       clienteFilter, { params });
   }
 
-  buscarPeloCnpj(cnpj: string): Observable<ClienteDTOResourceList>  {
+  buscarPeloCnpj(cnpj: string): Observable<ClienteDTOResourceList> {
     return this.http.get<ClienteDTOResourceList>(this.apiCliente + '/' + cnpj);
   }
 
+  atualizarCliente(cliente: ClienteDTOResourceList): Observable<ClienteDTOResourceList> {
+    return this.http.put<ClienteDTOResourceList>(this.apiCliente + '/' + cliente.cnpj, cliente);
+  }
 }
