@@ -39,7 +39,8 @@ export class ClienteMapaEditComponent implements OnInit {
     private enderecoService: EnderecoService,
     private snackBar: MatSnackBar,
     private avisoDialogService: AvisosDialogService,
-    private dialogMostrarMapa: MatDialog
+    private dialogMostrarMapa: MatDialog,
+    private router: Router
   ) {
   }
 
@@ -128,9 +129,7 @@ export class ClienteMapaEditComponent implements OnInit {
       height: '520px',
       width: '450px',
       data: coordenada
-    });
-
-    this.visualizarMapa();
+    }); 
   }
 
 
@@ -202,8 +201,9 @@ export class ClienteMapaEditComponent implements OnInit {
           this.mostraProgresso = false;
           this.cliente = resposta;
           this.snackBar.open("SUCESSO ao Atualizar Cliente", "SUCESSO!", {
-            duration: 2000
+            duration: 3000
           });
+          this.router.navigate(['cliente/mapa-edit/' + this.cliente.cnpj]);
         },
         error: (errorResponse) => {
           console.log(errorResponse);

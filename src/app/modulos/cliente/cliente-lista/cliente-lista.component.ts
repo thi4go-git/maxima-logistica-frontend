@@ -57,8 +57,15 @@ export class ClienteListaComponent implements OnInit, AfterViewInit {
     this.listarTodosSemFiltro();
   }
 
-
+  teste() {
+    alert('')
+  }
+  
   listarTodosSemFiltro() {
+
+    console.log("aq");
+
+    console.log(this.clienteFilter);
 
     this.mostraProgresso = true;
 

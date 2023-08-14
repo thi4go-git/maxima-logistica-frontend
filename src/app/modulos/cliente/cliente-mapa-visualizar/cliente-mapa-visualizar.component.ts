@@ -11,24 +11,14 @@ import { environment } from 'src/environments/environment';
 })
 export class ClienteMapaVisualizarComponent implements OnInit {
 
-  retornoEmitter = new EventEmitter<any>();
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public coordenada: Coordenada,
   ) { }
-
 
   linkEndereco: string = '';
 
   ngOnInit(): void {
     this.mostrarLocalizacaoNoMapa();
-  }
-
-  getTeste() {
-    const newCoordenada: Coordenada = new Coordenada;
-    newCoordenada.latitude = this.coordenada.latitude;
-    newCoordenada.longitude = this.coordenada.longitude;
-    this.retornoEmitter.emit(newCoordenada);
   }
 
   mostrarLocalizacaoNoMapa() {
@@ -40,26 +30,22 @@ export class ClienteMapaVisualizarComponent implements OnInit {
       latitude == undefined || longitude == undefined) {
       alert("Informe a latitude e longitude!")
     } else {
-      const mapElement = document.getElementById("mapa-tela");//referencia ao ID da div que mostrará
-      if (mapElement) {//Verifica se existe a DIV com id map no HTML
+      const mapElement = document.getElementById("mapa-tela");
+      if (mapElement) {
         let loader = new Loader({
           apiKey: environment.tokenGoogleMaps
         })
-        loader.load().then(() => { //faz aparecer o map na div definida HTML = mostra-localizacao"
-          //nesse exemplo: <div class="full" id="map"></div
+        loader.load().then(() => {
           const localizacao = { lat: latitude, lng: longitude };
-          //CArrega a lozalização1 através das cordenadas
           const localizacaoMapa = new google.maps.Map(mapElement, {
             center: localizacao,
             zoom: 16,
           });
-          //Marca a localização no mapa com alfinete
           const marcarLocalizacaoNoMapa = new google.maps.Marker({
             position: localizacao,
             map: localizacaoMapa,
             title: "Minha Localização",
           });
-
           this.linkEndereco = `https://www.google.com/maps?q=${latitude},${longitude}`;
 
         });
