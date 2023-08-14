@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Loader } from '@googlemaps/js-api-loader';
 import { Coordenada } from 'src/app/entity/coordenada';
@@ -11,15 +11,25 @@ import { environment } from 'src/environments/environment';
 })
 export class ClienteMapaVisualizarComponent implements OnInit {
 
+  retornoEmitter = new EventEmitter<any>();
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public coordenada: Coordenada,
   ) { }
 
 
+  linkEndereco: string = '';
+
   ngOnInit(): void {
     this.mostrarLocalizacaoNoMapa();
   }
 
+  getTeste() {
+    const newCoordenada: Coordenada = new Coordenada;
+    newCoordenada.latitude = this.coordenada.latitude;
+    newCoordenada.longitude = this.coordenada.longitude;
+    this.retornoEmitter.emit(newCoordenada);
+  }
 
   mostrarLocalizacaoNoMapa() {
 
@@ -50,7 +60,7 @@ export class ClienteMapaVisualizarComponent implements OnInit {
             title: "Minha Localização",
           });
 
-          // this.linkEndereco = `https://www.google.com/maps?q=${this.latitude},${this.longitude}`;
+          this.linkEndereco = `https://www.google.com/maps?q=${latitude},${longitude}`;
 
         });
       }

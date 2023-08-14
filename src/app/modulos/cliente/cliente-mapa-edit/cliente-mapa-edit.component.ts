@@ -9,6 +9,8 @@ import { ClienteService } from 'src/app/servicos/cliente.service';
 import { EnderecoService } from 'src/app/servicos/endereco.service';
 import { ClienteMapaVisualizarComponent } from '../cliente-mapa-visualizar/cliente-mapa-visualizar.component';
 import { Coordenada } from 'src/app/entity/coordenada';
+import { Loader } from '@googlemaps/js-api-loader';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-cliente-mapa-edit',
@@ -27,6 +29,9 @@ export class ClienteMapaEditComponent implements OnInit {
 
   latitude: number = -16.7590297;
   longitude: number = -49.2552972;
+
+  enderecoPesquisar: string = '';
+  coordenadaObtida: string = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -112,8 +117,6 @@ export class ClienteMapaEditComponent implements OnInit {
 
 
   abrirEnderecoClienteNoMapa(cliente: ClienteDTOResourceList) {
-
-
     const latNumber: number = Number(cliente.latitude);
     const longNumber: number = Number(cliente.longitude);
 
@@ -121,14 +124,63 @@ export class ClienteMapaEditComponent implements OnInit {
     coordenada.latitude = latNumber
     coordenada.longitude = longNumber;
 
-    const enderecoMapa = this.dialogMostrarMapa.open(ClienteMapaVisualizarComponent, {
-      height: '400px',
-      width: '500px',
+    const dialogMapa = this.dialogMostrarMapa.open(ClienteMapaVisualizarComponent, {
+      height: '520px',
+      width: '450px',
       data: coordenada
     });
 
+    dialogMapa.componentInstance.retornoEmitter.subscribe((resultado: any) => {
+      console.log('Resultado do getTeste:', resultado);
 
+    });
+
+    dialogMapa.afterClosed().subscribe((resultado: Coordenada) => {
+      console.log('Resultado do getTeste: afterClosed', resultado);
+    });
 
   }
+
+
+
+  obterNovaCoordenadasDoEndereco() {
+    if (this.enderecoPesquisar == null ||
+      this.enderecoPesquisar == undefined) {
+      alert("Informe o endereço: (Nome rua, Nº rua, Bairro, Cidade ou CEP) ")
+    } else {
+      const mapElement = document.getElementById("nova-coordenada");
+      if (mapElement) {
+        let loader = new Loader({
+          apiKey: environment.tokenGoogleMaps
+        })
+        loader.load().then(() => {
+          const geocoder = new google.maps.Geocoder();
+          geocoder.geocode({ address: this.enderecoPesquisar }, (results, status) => {
+            if (status === google.maps.GeocoderStatus.OK) {
+              if (results != null) {
+                const localizacao = results[0].geometry.location;
+                this.coordenadaObtida = '' + localizacao;
+                alert('coordenadaObtida' + this.coordenadaObtida)
+                const localizacaoMapa = new google.maps.Map(mapElement, {
+                  center: localizacao,
+                  zoom: 16,
+                });
+                const marcarLocalizacaoNoMapa = new google.maps.Marker({
+                  position: localizacao,
+                  map: localizacaoMapa,
+                  title: "Localização Obtida",
+                });
+                const localizacaoFormatada = this.coordenadaObtida.replace(/\)/g, '').replace(/\(/g, '');
+              }
+            } else {
+              console.error("Geocodificação falhou devido a: " + status);
+              alert("Geocodificação falhou devido a: " + status)
+            }
+          });
+        });
+      }
+    }
+  }
+
 
 }

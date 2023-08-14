@@ -7,15 +7,22 @@
         </mat-toolbar>
     </p>
     <h3>
-        <span>
+        <div>
             Latitude: {{ coordenada.latitude }}
-        </span>
-        <span>
+        </div>
+        <div>
             Longitude {{ coordenada.longitude }}
-        </span>
+        </div>
     </h3>
-
     <div class="mapa" id="mapa-tela">
-
+    </div>
+    <div *ngIf="linkEndereco">
+        <a href="{{ linkEndereco }}" target="_blank">{{ linkEndereco }}</a>
     </div>
 </div>
+<mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="false" class="btn btn-danger ml-2">
+        <i class="fa fa-solid fa-arrow-alt-circle-left"></i>
+        <mat-icon>fast_rewind</mat-icon> Fechar
+    </button>
+</mat-dialog-actions>

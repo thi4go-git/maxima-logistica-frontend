@@ -95,8 +95,10 @@
             <div class="mapa">
                 <mat-card>
                     <mat-card-header>
-                        <mat-card-title>MAPA</mat-card-title>
+                        <mat-card-title>Coordenadas do Cliente</mat-card-title>
                         <mat-card-subtitle>
+
+                            <h3>Coordenada Atual:</h3>
                             <mat-form-field class="espaco" appearance="fill">
                                 <mat-icon matSuffix>fingerprint</mat-icon>
                                 <mat-label> <b>Latitude</b> </mat-label>
@@ -110,12 +112,43 @@
                                 <input matInput placeholder="Informe a longitude:" name="longitude"
                                     [(ngModel)]="cliente.longitude" disabled="true" />
                             </mat-form-field>
+
                             <button type="button" class="btn btn-success espaco"
                                 (click)="abrirEnderecoClienteNoMapa(cliente)">
                                 <i class="fa fa-save"></i>
                                 <mat-icon>search</mat-icon>
                                 Visualizar MAPA
                             </button>
+
+                            <hr />
+
+                            <mat-card-header>
+                                <mat-card-title>Definir nova coordenada</mat-card-title>
+                                <mat-card-subtitle>
+                                    EX: Rua Ubiratan 236, setor central Goiânia - Ou Informe o CEP: 74913335
+                                    <mat-form-field class="full-width" appearance="fill">
+                                        <mat-icon matSuffix>confirmation_number</mat-icon>
+                                        <mat-label> <b>Endereço / CEP </b> </mat-label>
+                                        <input matInput placeholder="Digite o Endereço ex: Rua ubauda 236 Setor Central"
+                                            name="enderecoPesquisar" [(ngModel)]="enderecoPesquisar" />
+                                    </mat-form-field>
+
+                                </mat-card-subtitle>
+                            </mat-card-header>
+
+                            <button type="button" class="btn btn-success espaco"
+                                (click)="obterNovaCoordenadasDoEndereco()">
+                                <i class="fa fa-save"></i>
+                                <mat-icon>search</mat-icon>
+                                Buscar Nova coordenada
+                            </button>
+
+                            <div class="mapa" id="nova-coordenada">
+
+                            </div>
+
+
+
                         </mat-card-subtitle>
                     </mat-card-header>
 
