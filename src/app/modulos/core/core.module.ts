@@ -30,12 +30,10 @@ import { ClienteModule } from '../cliente/cliente.module';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    FormsModule,
     SharedModule,
     TemplateModule,
     ClienteModule
   ], exports: [
-    FormsModule
   ], providers: [
     AvisosDialogService,
     ClienteService,
