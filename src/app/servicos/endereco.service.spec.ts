@@ -4,7 +4,7 @@ import { HttpTestingController, HttpClientTestingModule } from '@angular/common/
 import { EnderecoDTOViacep } from '../entity/enderecoViaCepDTO';
 import { environment } from 'src/environments/environment';
 
-fdescribe('EnderecoService', () => {
+describe('EnderecoService', () => {
 
   let enderecoService: EnderecoService;
   let httpMock: HttpTestingController;
