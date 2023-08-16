@@ -19,12 +19,20 @@ export class ClienteService {
     const params = new HttpParams()
       .set('page', page)
       .set('size', size)
+
+console.log(clienteFilter);
+
+
     return this.http.post<ClientePaginator>(this.apiCliente + '/filter',
       clienteFilter, { params });
   }
 
   buscarPeloCnpj(cnpj: string): Observable<ClienteDTOResourceList> {
     return this.http.get<ClienteDTOResourceList>(this.apiCliente + '/' + cnpj);
+  }
+
+  salvarCliente(cliente: ClienteDTOResourceList): Observable<ClienteDTOResourceList> {
+    return this.http.post<ClienteDTOResourceList>(this.apiCliente, cliente);
   }
 
   atualizarCliente(cliente: ClienteDTOResourceList): Observable<ClienteDTOResourceList> {

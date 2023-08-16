@@ -10,6 +10,7 @@ const routes: Routes = [
     path: 'cliente', component: LayoutComponent, children: [
       { path: 'lista', component: ClienteListaComponent, title: 'Listagem de Clientes' },
       { path: 'mapa-edit/:cnpj', component: ClienteMapaEditComponent, title: 'Mapa - Edição Cliente' },
+      { path: 'cadastro', component: ClienteMapaEditComponent, title: 'Cadastro de Cliente' },
       { path: '', redirectTo: '/cliente/lista', pathMatch: 'full' },
       { path: '**', component: NotFoundComponent }
     ]

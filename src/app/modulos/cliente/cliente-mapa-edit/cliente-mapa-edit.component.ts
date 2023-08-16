@@ -27,9 +27,6 @@ export class ClienteMapaEditComponent implements OnInit {
   cliente: ClienteDTOResourceList = new ClienteDTOResourceList;
   mostraProgresso: boolean = false;
 
-  latitude: number = -16.7590297;
-  longitude: number = -49.2552972;
-
   enderecoPesquisar: string = '';
   coordenadaObtida: string = '';
 
@@ -45,38 +42,45 @@ export class ClienteMapaEditComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
-    this.listarPorCNPJ();
-  }
 
   onSubmit() {
-
+    if (this.cliente.id != undefined && this.cliente.id
+      != null && this.cliente.id != 0) {
+      this.atualizarCliente();
+    } else {
+      this.salvarCliente();
+    }
   }
+
+
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe(parametro => {
+      if (parametro && parametro['cnpj'] != undefined) {
+        this.cnpj = parametro['cnpj'];
+        this.listarPorCNPJ();
+      }
+    });
+  }
+
+
+
 
   listarPorCNPJ() {
     this.mostraProgresso = true;
-
-    this.activatedRoute.params.subscribe(parametro => {
-
-      if (parametro && parametro['cnpj'] != undefined) {
-        this.cnpj = parametro['cnpj'];
-        this.clienteService
-          .buscarPeloCnpj(this.cnpj).subscribe({
-            next: (resposta) => {
-              this.cliente = resposta;
-              this.mostraProgresso = false;
-            },
-            error: (errorResponse) => {
-              console.log(errorResponse);
-              this.snackBar.open("Erro ao obter Cliente pelo CNPJ!", "ERRO!", {
-                duration: 2000
-              });
-              this.mostraProgresso = false;
-            }
+    this.clienteService
+      .buscarPeloCnpj(this.cnpj).subscribe({
+        next: (resposta) => {
+          this.cliente = resposta;
+          this.mostraProgresso = false;
+        },
+        error: (errorResponse) => {
+          console.log(errorResponse);
+          this.snackBar.open("Erro ao obter Cliente pelo CNPJ!", "ERRO!", {
+            duration: 2000
           });
-      }
-
-    });
+          this.mostraProgresso = false;
+        }
+      });
   }
 
 
@@ -129,7 +133,7 @@ export class ClienteMapaEditComponent implements OnInit {
       height: '520px',
       width: '450px',
       data: coordenada
-    }); 
+    });
   }
 
 
@@ -189,6 +193,38 @@ export class ClienteMapaEditComponent implements OnInit {
     });
   }
 
+  salvarCliente() {
+    this.mostraProgresso = true;
+    if (this.cliente.cep) {
+      this.cliente.cep = this.cliente.cep.replaceAll("-", "");
+    }
+    if (this.cliente.cnpj) {
+      this.cliente.cnpj = this.cliente.cnpj.replaceAll("-", "")
+        .replaceAll(".", "")
+        .replaceAll("/", "");
+    }
+    this.clienteService
+      .salvarCliente(this.cliente).subscribe({
+        next: (resposta) => {
+          this.listaErros = [];
+          this.mostraProgresso = false;
+          this.cliente = resposta;
+          this.snackBar.open("SUCESSO ao SALVAR Cliente", "SUCESSO!", {
+            duration: 3000
+          });
+          this.router.navigate(['cliente/lista']);
+        },
+        error: (errorResponse) => {
+          this.listaErros = errorResponse.error.erros
+          console.log(errorResponse);
+          this.snackBar.open("Erro ao SALVAR Cliente verifique a lista de erros.", "ERRO!", {
+            duration: 2000
+          });
+          this.mostraProgresso = false;
+        }
+      });
+  }
+
 
   atualizarCliente() {
     this.mostraProgresso = true;
@@ -198,6 +234,7 @@ export class ClienteMapaEditComponent implements OnInit {
     this.clienteService
       .atualizarCliente(this.cliente).subscribe({
         next: (resposta) => {
+          this.listaErros = [];
           this.mostraProgresso = false;
           this.cliente = resposta;
           this.snackBar.open("SUCESSO ao Atualizar Cliente", "SUCESSO!", {
@@ -206,8 +243,9 @@ export class ClienteMapaEditComponent implements OnInit {
           this.router.navigate(['cliente/mapa-edit/' + this.cliente.cnpj]);
         },
         error: (errorResponse) => {
+          this.listaErros = errorResponse.error.erros
           console.log(errorResponse);
-          this.snackBar.open("Erro ao Atualizar Cliente", "ERRO!", {
+          this.snackBar.open("Erro ao Atualizar Cliente verifique a lista de erros.", "ERRO!", {
             duration: 2000
           });
           this.mostraProgresso = false;

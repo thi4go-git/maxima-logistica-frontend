@@ -41,11 +41,23 @@
                 <input matInput placeholder="Informe o ID:" name="id" [(ngModel)]="cliente.id" disabled="true" />
             </mat-form-field>
 
-            <mat-form-field class="full-width" appearance="fill">
-                <mat-icon matSuffix>fingerprint</mat-icon>
-                <mat-label> <b>CNPJ:</b> </mat-label>
-                <input matInput placeholder="Informe o CNPJ:" name="cnpj" [(ngModel)]="cliente.cnpj" disabled="true" />
-            </mat-form-field>
+            <div *ngIf="cliente.id">
+                <mat-form-field class="full-width" appearance="fill">
+                    <mat-icon matSuffix>fingerprint</mat-icon>
+                    <mat-label> <b>CNPJ:</b> </mat-label>
+                    <input matInput placeholder="Informe o CNPJ:" name="cnpj" [(ngModel)]="cliente.cnpj"
+                        disabled="true" />
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="!cliente.id">
+                <mat-form-field class="full-width" appearance="fill">
+                    <mat-icon matSuffix>fingerprint</mat-icon>
+                    <mat-label> <b>CNPJ:</b> </mat-label>
+                    <input matInput placeholder="Informe o CNPJ:" name="cnpj" [(ngModel)]="cliente.cnpj"
+                        disabled="false" />
+                </mat-form-field>
+            </div>
 
             <mat-form-field class="full-width" appearance="fill">
                 <mat-icon matSuffix>confirmation_number</mat-icon>
@@ -151,11 +163,23 @@
 
             </div>
         </div>
+        <div id="row">
+            <div id="col-md-12">
+                <div class="alert alert-danger" role="alert" *ngFor="let erro of listaErros">
+                    {{ erro }}
+                </div>
+            </div>
+        </div>
         <br>
-        <button type="button" class="btn btn-success espaco" (click)="atualizarCliente()">
+        <button type="submit" class="btn btn-success espaco">
             <i class="fa fa-save"></i>
-            <mat-icon>search</mat-icon>
-            Atualizar informações
+            <mat-icon>save</mat-icon>
+            <div *ngIf="cliente.id">
+                Salvar Alterações
+            </div>
+            <div *ngIf="!cliente.id">
+                Cadastrar
+            </div>
         </button>
     </form>
 </div>
