@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { KeycloakService } from 'src/app/servicos/keycloak.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -7,5 +9,28 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent {
-  versao: string = environment.versao;
+
+
+  usuarioLogado: string = "Deslogado";
+  authorities: string[] = [];  
+  versao: string = '';
+
+
+
+  constructor(
+    private keycloakService: KeycloakService,
+    private router: Router
+  ) { }
+
+  ngOnInit(): void {
+    this.usuarioLogado = this.keycloakService.getUsuarioAutenticado();
+    this.authorities = this.keycloakService.getAuthoritiesToken();
+    this.versao = environment.versao;
+  }
+
+  logout() {
+    this.keycloakService.encerrarSessao();
+    this.router.navigate(['/login']);
+  }
+
 }

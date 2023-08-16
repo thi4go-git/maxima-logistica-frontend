@@ -20,7 +20,7 @@
                 </a>
 
                 <div class="sb-sidenav-menu-heading">Logout</div>
-                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseLayouts"
+                <a class="nav-link collapsed" data-toggle="collapse" (click)="logout()" data-target="#collapseLayouts"
                     aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-sign-out-alt"></i>
@@ -39,6 +39,7 @@
                 <mat-icon>perm_identity</mat-icon>
                 Usuário logado:
             </div>
+            {{ usuarioLogado }}
         </div>
     </nav>
 </div>

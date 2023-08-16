@@ -69,13 +69,4 @@ export class KeycloakService {
     }
   }
 
-  isAdmin(authorities: string[]) {
-    for (let cont = 0; cont < authorities.length; cont++) {
-      let role = authorities[cont];
-      if (role == "ROLE_ADMIN" || role == "ADMIN") {
-        return true;
-      }
-    }
-    return false;
-  }
 }
