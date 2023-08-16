@@ -6,8 +6,6 @@ import { ClientePaginator } from '../entity/clientePaginator';
 import { ClienteDTOResourceList } from '../entity/clienteDDTOResourceList';
 
 
-
-
 @Injectable({ providedIn: 'root' })
 export class ClienteService {
 
@@ -19,10 +17,6 @@ export class ClienteService {
     const params = new HttpParams()
       .set('page', page)
       .set('size', size)
-
-console.log(clienteFilter);
-
-
     return this.http.post<ClientePaginator>(this.apiCliente + '/filter',
       clienteFilter, { params });
   }
