@@ -15,6 +15,7 @@ import { AvisosDialogService } from 'src/app/servicos/avisos-dialog.service';
 import { ClienteService } from 'src/app/servicos/cliente.service';
 import { EnderecoService } from 'src/app/servicos/endereco.service';
 import { ClienteModule } from '../cliente/cliente.module';
+import { KeycloakService } from 'src/app/servicos/keycloak.service';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { ClienteModule } from '../cliente/cliente.module';
   ], providers: [
     AvisosDialogService,
     ClienteService,
-    EnderecoService
+    EnderecoService,
+    KeycloakService
   ]
 })
 export class CoreModule { }
