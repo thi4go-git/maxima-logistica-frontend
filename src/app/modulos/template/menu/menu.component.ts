@@ -10,12 +10,8 @@ import { environment } from 'src/environments/environment';
 })
 export class MenuComponent {
 
-
   usuarioLogado: string = "Deslogado";
-  authorities: string[] = [];  
   versao: string = '';
-
-
 
   constructor(
     private keycloakService: KeycloakService,
@@ -23,8 +19,7 @@ export class MenuComponent {
   ) { }
 
   ngOnInit(): void {
-    this.usuarioLogado = this.keycloakService.getUsuarioAutenticado();
-    this.authorities = this.keycloakService.getAuthoritiesToken();
+    this.usuarioLogado = this.keycloakService.getUsuarioAutenticado();   
     this.versao = environment.versao;
   }
 

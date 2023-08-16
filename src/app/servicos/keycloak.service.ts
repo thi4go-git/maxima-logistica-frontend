@@ -61,12 +61,4 @@ export class KeycloakService {
     }
   }
 
-  getAuthoritiesToken() {
-    const token = this.obterTokenStorage();
-    if (token) {
-      const authorities = this.jwtHelper.decodeToken(token).authorities;
-      return authorities;
-    }
-  }
-
 }

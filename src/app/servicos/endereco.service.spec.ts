@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 fdescribe('EnderecoService', () => {
 
   let enderecoService: EnderecoService;
-  let httpMock: HttpTestingController; // Mock do HTTP para requisição mockada
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -18,7 +18,7 @@ fdescribe('EnderecoService', () => {
     httpMock = testBed.get(HttpTestingController);
   });
 
-  it('Deve criar o componente EnderecoService', () => {
+  it('Deve criar o Serviço EnderecoService', () => {
     expect(enderecoService).toBeTruthy();
   });
 
