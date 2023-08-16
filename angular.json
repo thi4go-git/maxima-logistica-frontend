@@ -87,6 +87,12 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "codeCoverageExclude": [
+              "src/app/shared/utils/**/*",
+              "src/app/shared/mock/**/*",
+              "**/*routing.module.ts"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"
