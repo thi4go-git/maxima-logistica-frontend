@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { KeycloakService } from 'src/app/servicos/keycloak.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private keycloakService: KeycloakService,
   ) { }
 
   onSubmit() {
@@ -31,7 +33,26 @@ export class LoginComponent {
   }
 
   private logar() {
-
+    this.keycloakService
+      .obterToken(this.username, this.password)
+      .subscribe({
+        next: (response) => {
+          this.erros = [];
+          const access_token = JSON.stringify(response);
+          localStorage.setItem('access_token', access_token);
+          this.router.navigate(['/cliente/lista'])
+        },
+        error: (errorResponse) => {
+          const status = errorResponse.status;
+          const msgErro = errorResponse.message;
+          if (status == 0) {
+            const infoErr = 'STATUS: (' + status + ") " + msgErro;
+            this.erros = [infoErr];
+          } else {
+            this.erros = [errorResponse.error.error_description];
+          }
+        }
+      });
   }
 
 }
