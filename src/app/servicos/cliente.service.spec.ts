@@ -16,8 +16,8 @@ describe('ClienteService', () => {
       imports: [HttpClientTestingModule]
     });
     const testBed = getTestBed();
-    clienteService = testBed.get(ClienteService);
-    httpMock = testBed.get(HttpTestingController);
+    clienteService = testBed.inject(ClienteService);
+    httpMock = testBed.inject(HttpTestingController);
   });
 
   it('Deve Criar o serviço ClienteService', () => {

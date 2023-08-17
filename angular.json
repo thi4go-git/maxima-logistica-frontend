@@ -91,7 +91,9 @@
             "codeCoverageExclude": [
               "src/app/shared/utils/**/*",
               "src/app/shared/mock/**/*",
-              "**/*routing.module.ts"
+              "**/*routing.module.ts",
+              "src/app/componentes/confirmation-dialog/**/*",
+              "src/app/componentes/layout/**/*"
             ],
             "assets": [
               "src/favicon.ico",

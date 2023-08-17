@@ -19,8 +19,8 @@ describe('KeycloakService', () => {
       ]
     });
     const testBed = getTestBed();
-    keycloakService = testBed.get(KeycloakService);
-    httpMock = testBed.get(HttpTestingController);
+    keycloakService = testBed.inject(KeycloakService);
+    httpMock = testBed.inject(HttpTestingController);
   });
 
   it('Deve Criar o Serviço KeycloakService ', () => {

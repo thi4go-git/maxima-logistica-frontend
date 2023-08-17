@@ -32,7 +32,7 @@ export class LoginComponent {
     }
   }
 
-  private logar() {
+  logar() {
     this.keycloakService
       .obterToken(this.username, this.password)
       .subscribe({

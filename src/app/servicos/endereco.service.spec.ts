@@ -14,8 +14,8 @@ describe('EnderecoService', () => {
       imports: [HttpClientTestingModule]
     });
     const testBed = getTestBed();
-    enderecoService = testBed.get(EnderecoService);
-    httpMock = testBed.get(HttpTestingController);
+    enderecoService = testBed.inject(EnderecoService);
+    httpMock = testBed.inject(HttpTestingController);
   });
 
   it('Deve criar o Serviço EnderecoService', () => {
