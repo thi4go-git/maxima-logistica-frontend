@@ -12,11 +12,13 @@ pipeline {
                 echo "Instalando dependências"
                 sh 'npm install'
             }
-        }
-        stage('NPM Build') {
+        }        
+        stage('Testando') {
             steps {
-                echo "Instalando dependências"
-                sh 'npm run build'
+                sh 'rm -rf %WORKSPACE%/test-report'   
+                sh './node_modules/.bin/ng test --karma-config karma.conf.js --code-coverage'
+                junit 'test-report/*Chrome_*/*.xml'
+                }
             }
         }
         stage('Sonar Analise') {
@@ -35,6 +37,12 @@ pipeline {
                 timeout(time: 1, unit: 'MINUTES'){
                     waitForQualityGate abortPipeline: true
                 }
+            }
+        }
+        stage('NPM Build') {
+            steps {
+                echo "Build Projeto"
+                sh 'npm run build'
             }
         }
         stage('Imagem Docker') {
