@@ -10,7 +10,8 @@ pipeline {
         stage('Dependencias') {
             steps {
                 echo "Instalando dependências"
-                sh 'npm install'
+                sh 'npm install',
+                 sh 'npm install -D puppeteer'
             }
         }
         stage('Testando') {
