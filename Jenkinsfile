@@ -7,12 +7,14 @@ pipeline {
     }
 
     stages {
+
         stage('Dependencias') {
             steps {
                 echo "Instalando dependências"
-                sh 'npm install',          
+                sh 'npm install'   
             }
-        }                
+        }          
+              
         stage('Sonar Analise') {
             environment{
                 scannerHome = tool 'SONAR_SCANNER'
@@ -33,7 +35,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                echo "Instalando dependências"
+                echo "Build Projeto"
                 sh 'npm run build'
             }
         }
