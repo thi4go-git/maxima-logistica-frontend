@@ -12,15 +12,14 @@ pipeline {
                 echo "Instalando dependências"
                 sh 'npm install'
             }
-        }        
-        stage('Testando') {
-            steps {
-                sh 'rm -rf %WORKSPACE%/test-report'   
-                sh './node_modules/.bin/ng test --karma-config karma.conf.js --code-coverage'
-                junit 'test-report/*Chrome_*/*.xml'
-                }
-            }
         }
+        stage('Testes') {
+            steps {
+                sh 'rm -rf %WORKSPACE%/test-report'
+                sh './node_modules/.bin/ng test --karma-config karma.conf.js --code-coverage'
+                junit 'test-report/*Chrome_*/*.xml'                
+            }
+        }        
         stage('Sonar Analise') {
             environment{
                 scannerHome = tool 'SONAR_SCANNER'
@@ -39,9 +38,9 @@ pipeline {
                 }
             }
         }
-        stage('NPM Build') {
+        stage('Build') {
             steps {
-                echo "Build Projeto"
+                echo "Instalando dependências"
                 sh 'npm run build'
             }
         }
