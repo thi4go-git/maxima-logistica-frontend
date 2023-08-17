@@ -67,7 +67,7 @@ describe('ClienteListaComponent', () => {
         expect(clienteListaComponent.listarTodosFiltro).toHaveBeenCalled();
     });
 
-    fdescribe('Teste método listarTodosFiltro', () => {
+    describe('Teste método listarTodosFiltro', () => {
         it('Deve listarTodosPaginadoFilter ', () => {
     
         });
