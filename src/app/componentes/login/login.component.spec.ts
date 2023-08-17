@@ -57,8 +57,8 @@ describe('LoginComponent', () => {
         it('Deve chamar Logar', () => {
             spyOn(loginComponent, 'logar');
 
-            loginComponent.username = 'kjkjhjk'
-            loginComponent.password = 'hjkhjkh'
+            loginComponent.username = ' '
+            loginComponent.password = ' '
 
             loginComponent.onSubmit();
             expect(loginComponent.logar).toHaveBeenCalled();
@@ -98,9 +98,7 @@ describe('LoginComponent', () => {
             expect(loginComponent.erros).toEqual(msgErroEsperado);
         });
         it('Deve obter o token com sucesso e Logar', () => {
-            loginComponent.username = 'sdfddf'
-            loginComponent.password = 'sdfgsggf'
-
+       
             // se o retorno é Observable necessita do returnValue(of(   'of'
             mockKeycloakService.obterToken.and.returnValue(of({ access_token: 'meu_token_teste' }));
 
