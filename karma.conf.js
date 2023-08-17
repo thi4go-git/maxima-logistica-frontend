@@ -40,7 +40,7 @@ module.exports = function (config) {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
         flags: ['--no-sandbox'],
-        executablePath: '/usr/bin/google-chrome'
+        executablePath: '/usr/bin/chromium-browser'
       }
     },
     singleRun: true,
