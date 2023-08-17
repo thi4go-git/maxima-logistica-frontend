@@ -16,7 +16,7 @@ pipeline {
         stage('Testes') {
             steps {
                 sh 'rm -rf %WORKSPACE%/test-report'
-                sh 'ng test --code-coverage'
+                sh './node_modules/.bin/ng test --karma-config karma.conf.js --code-coverage'
                 junit 'test-report/*Chrome_*/*.xml'                
             }
         }        
