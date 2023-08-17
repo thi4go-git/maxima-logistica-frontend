@@ -13,13 +13,7 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage('Testes') {
-            steps {
-               // sh 'rm -rf %WORKSPACE%/test-report'
-               // sh './node_modules/.bin/ng test --karma-config karma.conf.js --code-coverage'
-                // junit './test-report/*Chrome_*/*.xml'                
-            }
-        }        
+             
         stage('Sonar Analise') {
             environment{
                 scannerHome = tool 'SONAR_SCANNER'
