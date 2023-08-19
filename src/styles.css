@@ -611,6 +611,7 @@ pre code {
     padding-left: 0.75rem;
     margin-right: auto;
     margin-left: auto;
+    background-color: rgb(232, 240, 240);
 }
 
 @media (min-width: 576px) {
@@ -11126,7 +11127,7 @@ body {
 }
 
 .sb-sidenav-dark {
-    background-color: #212529;
+    background-color: #070e2b;
     color: rgba(255, 255, 255, 0.5);
 }
 
