@@ -11,13 +11,15 @@ import { ClienteMapaVisualizarComponent } from '../cliente-mapa-visualizar/clien
 import { Coordenada } from 'src/app/entity/coordenada';
 import { Loader } from '@googlemaps/js-api-loader';
 import { environment } from 'src/environments/environment';
+import { IFormCanDeactivate } from 'src/app/guardiao/iform-candeactivate';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-cliente-mapa-edit',
   templateUrl: './cliente-mapa-edit.component.html',
   styleUrls: ['./cliente-mapa-edit.component.css']
 })
-export class ClienteMapaEditComponent implements OnInit {
+export class ClienteMapaEditComponent implements OnInit, IFormCanDeactivate {
 
   cnpj: string = '';
   listaErros: string[] = [];
@@ -30,6 +32,8 @@ export class ClienteMapaEditComponent implements OnInit {
   enderecoPesquisar: string = '';
   coordenadaObtida: string = '';
 
+  formulario!: FormGroup;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private clienteService: ClienteService,
@@ -37,8 +41,10 @@ export class ClienteMapaEditComponent implements OnInit {
     private snackBar: MatSnackBar,
     private avisoDialogService: AvisosDialogService,
     private dialogMostrarMapa: MatDialog,
-    private router: Router
+    private router: Router,
+    private formBuild: FormBuilder,
   ) {
+    this.criaFormCadastro();
   }
 
 
@@ -52,6 +58,9 @@ export class ClienteMapaEditComponent implements OnInit {
     }
   }
 
+  formularioValido(): boolean {
+    return this.formulario.valid && this.formulario.controls['latitude'].value && this.formulario.controls['longitude'].value;
+  }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(parametro => {
@@ -62,7 +71,47 @@ export class ClienteMapaEditComponent implements OnInit {
     });
   }
 
+  private criaFormCadastro() {
+    this.formulario = this.formBuild.group({
+      id: [{ value: this.cliente.id, disabled: true },],
+      nome: [this.cliente.nome, Validators.required],
+      cnpj: [{ value: this.cliente.cnpj, disabled: false }, [Validators.required, Validators.pattern(/^\d{14}$/)]],
+      cep: [this.cliente.cep, [Validators.required, Validators.pattern(/^\d{8}$/)]],
+      logradouro: [this.cliente.logradouro, Validators.required],
+      bairro: [this.cliente.bairro, Validators.required],
+      localidade: [this.cliente.localidade, Validators.required],
+      uf: [this.cliente.uf, [Validators.required, this.ufValidator]],
+      latitude: [{ value: this.cliente.latitude, disabled: true }, Validators.required],
+      longitude: [{ value: this.cliente.longitude, disabled: true }, Validators.required],
+      enderecoPesquisa: [this.enderecoPesquisar],
+    });
+  }
 
+
+  private criaFormUpdateCadastro() {
+    this.formulario = this.formBuild.group({
+      id: [{ value: this.cliente.id, disabled: true }, Validators.required],
+      nome: [this.cliente.nome, Validators.required],
+      cnpj: [{ value: this.cliente.cnpj, disabled: true }, [Validators.required, Validators.pattern(/^\d{14}$/)]],
+      cep: [this.cliente.cep, [Validators.required, Validators.pattern(/^\d{8}$/)]],
+      logradouro: [this.cliente.logradouro, Validators.required],
+      bairro: [this.cliente.bairro, Validators.required],
+      localidade: [this.cliente.localidade, Validators.required],
+      uf: [this.cliente.uf, [Validators.required, this.ufValidator]],
+      latitude: [{ value: this.cliente.latitude, disabled: true }, Validators.required],
+      longitude: [{ value: this.cliente.longitude, disabled: true }, Validators.required],
+      enderecoPesquisa: [this.enderecoPesquisar],
+    });
+  }
+
+
+  podeDesativarRota(): boolean {
+    //const houveAlteracaoForm: boolean = this.formulario.dirty
+    // if (houveAlteracaoForm) {
+    //  return confirm('As informações não foram salvas. Deseja abandonar o formulário?');
+    // }
+    return true;
+  }
 
 
   listarPorCNPJ() {
@@ -72,6 +121,7 @@ export class ClienteMapaEditComponent implements OnInit {
         next: (resposta) => {
           this.cliente = resposta;
           this.mostraProgresso = false;
+          this.criaFormUpdateCadastro();
         },
         error: (errorResponse) => {
           console.log(errorResponse);
@@ -84,22 +134,28 @@ export class ClienteMapaEditComponent implements OnInit {
   }
 
 
-  pesquisarEnderecoViaCep(cep: string) {
-    this.mostraProgresso = true;
-    this.enderecoService
-      .retornarEnderecoViaCep(cep).subscribe({
-        next: (resposta) => {
-          this.mostraProgresso = false;
-          this.definirEnderecoViaCep(resposta);
-        },
-        error: (errorResponse) => {
-          console.log(errorResponse);
-          this.snackBar.open("Erro ao obter endereço VIA CEP!", "ERRO!", {
-            duration: 2000
-          });
-          this.mostraProgresso = false;
-        }
-      });
+  pesquisarEnderecoViaCep() {
+    if (this.formulario.controls['cep'].valid) {
+
+      const formValues = this.formulario.value;
+      const cep: string = formValues.cep
+
+      this.mostraProgresso = true;
+      this.enderecoService
+        .retornarEnderecoViaCep(cep).subscribe({
+          next: (resposta) => {
+            this.mostraProgresso = false;
+            this.definirEnderecoViaCep(resposta);
+          },
+          error: (errorResponse) => {
+            console.log(errorResponse);
+            this.snackBar.open("Erro ao obter endereço VIA CEP!", "ERRO!", {
+              duration: 2000
+            });
+            this.mostraProgresso = false;
+          }
+        });
+    }
   }
 
 
@@ -107,11 +163,13 @@ export class ClienteMapaEditComponent implements OnInit {
     this.avisoDialogService.openConfirmationDialog("Preencher as informações de endereço através da consulta obtida pelo VIA Cep?")
       .then(result => {
         if (result) {
-          this.cliente.cep = enderecoCiaCep.cep;
-          this.cliente.logradouro = enderecoCiaCep.logradouro;
-          this.cliente.bairro = enderecoCiaCep.bairro;
-          this.cliente.localidade = enderecoCiaCep.localidade;
-          this.cliente.uf = enderecoCiaCep.uf;
+          this.formulario.patchValue({
+            cep: enderecoCiaCep.cep.replace("-", ""),
+            logradouro: enderecoCiaCep.logradouro,
+            bairro: enderecoCiaCep.bairro,
+            localidade: enderecoCiaCep.localidade,
+            uf: enderecoCiaCep.uf,
+          });
         } else {
           this.snackBar.open("Informe o endereço manualmente!", "OK!", {
             duration: 3000
@@ -121,26 +179,38 @@ export class ClienteMapaEditComponent implements OnInit {
   }
 
 
-  abrirEnderecoClienteNoMapa(cliente: ClienteDTOResourceList) {
-    const latNumber: number = Number(cliente.latitude);
-    const longNumber: number = Number(cliente.longitude);
+  abrirEnderecoClienteNoMapa() {
+    const latNumber: number = Number(this.formulario.controls['latitude'].value);
+    const longNumber: number = Number(this.formulario.controls['longitude'].value);
 
-    const coordenada = new Coordenada();
-    coordenada.latitude = latNumber
-    coordenada.longitude = longNumber;
+    if (latNumber != undefined && latNumber != 0 && !Number.isNaN(latNumber)
+      &&
+      longNumber != undefined && longNumber != 0 && !Number.isNaN(longNumber)) {
 
-    const dialogMapa = this.dialogMostrarMapa.open(ClienteMapaVisualizarComponent, {
-      height: '520px',
-      width: '450px',
-      data: coordenada
-    });
+      const coordenada = new Coordenada();
+      coordenada.latitude = latNumber
+      coordenada.longitude = longNumber;
+
+      const dialogMapa = this.dialogMostrarMapa.open(ClienteMapaVisualizarComponent, {
+        height: '520px',
+        width: '450px',
+        data: coordenada
+      });
+
+    } else {
+      alert("Não existem coordenadas. Favor obter uma Coordenada (Latitude e Longitude).")
+    }
+
   }
 
 
 
   obterNovaCoordenadasDoEndereco() {
-    if (this.enderecoPesquisar == null ||
-      this.enderecoPesquisar == undefined) {
+
+    const enderecoConsulta: string = this.formulario.controls['enderecoPesquisa'].value.trim();
+
+    if (enderecoConsulta == null ||
+      enderecoConsulta == undefined || enderecoConsulta.toString().length == 0) {
       alert("Informe o endereço: (Nome rua, Nº rua, Bairro, Cidade ou CEP) ")
     } else {
 
@@ -150,7 +220,7 @@ export class ClienteMapaEditComponent implements OnInit {
 
       loader.load().then(() => {
         const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ address: this.enderecoPesquisar }, (results, status) => {
+        geocoder.geocode({ address: enderecoConsulta }, (results, status) => {
           if (status === google.maps.GeocoderStatus.OK) {
             if (results != null) {
               const localizacao = results[0].geometry.location;
@@ -162,6 +232,11 @@ export class ClienteMapaEditComponent implements OnInit {
 
               this.cliente.latitude = latitudeObtida;
               this.cliente.longitude = longitudeObtida;
+
+              this.formulario.patchValue({
+                latitude: latitudeObtida,
+                longitude: longitudeObtida
+              });
 
               this.snackBar.open("Coordenada Obtida: Latitude: " + latitudeObtida + " - Longitude: " + longitudeObtida + " - Favor conferir no mapa!", "OK!", {
                 duration: 4000
@@ -182,76 +257,105 @@ export class ClienteMapaEditComponent implements OnInit {
   }
 
 
-  visualizarMapa() {
-    const coordenadaObtida: Coordenada = new Coordenada;
-    coordenadaObtida.latitude = Number(this.cliente.latitude);
-    coordenadaObtida.longitude = Number(this.cliente.longitude);
-    const dialogMapa = this.dialogMostrarMapa.open(ClienteMapaVisualizarComponent, {
-      height: '520px',
-      width: '450px',
-      data: coordenadaObtida
-    });
-  }
+
 
   salvarCliente() {
-    this.mostraProgresso = true;
-    if (this.cliente.cep) {
-      this.cliente.cep = this.cliente.cep.replaceAll("-", "");
+
+    if (this.formularioValido()) {
+      this.mostraProgresso = true;
+
+      this.passarInfoFormParaCliente();
+
+      if (this.cliente.cep) {
+        this.cliente.cep = this.cliente.cep.replaceAll("-", "");
+      }
+      if (this.cliente.cnpj) {
+        this.cliente.cnpj = this.cliente.cnpj.replaceAll("-", "")
+          .replaceAll(".", "")
+          .replaceAll("/", "");
+      }
+      this.clienteService
+        .salvarCliente(this.cliente).subscribe({
+          next: (resposta) => {
+            this.listaErros = [];
+            this.mostraProgresso = false;
+            this.cliente = resposta;
+            this.snackBar.open("SUCESSO ao SALVAR Cliente", "SUCESSO!", {
+              duration: 3000
+            });
+            this.router.navigate(['cliente/lista']);
+          },
+          error: (errorResponse) => {
+            this.listaErros = errorResponse.error.erros
+            console.log(errorResponse);
+            this.snackBar.open("Erro ao SALVAR Cliente verifique a lista de erros.", "ERRO!", {
+              duration: 2000
+            });
+            this.mostraProgresso = false;
+          }
+        });
+
     }
-    if (this.cliente.cnpj) {
-      this.cliente.cnpj = this.cliente.cnpj.replaceAll("-", "")
-        .replaceAll(".", "")
-        .replaceAll("/", "");
-    }
-    this.clienteService
-      .salvarCliente(this.cliente).subscribe({
-        next: (resposta) => {
-          this.listaErros = [];
-          this.mostraProgresso = false;
-          this.cliente = resposta;
-          this.snackBar.open("SUCESSO ao SALVAR Cliente", "SUCESSO!", {
-            duration: 3000
-          });
-          this.router.navigate(['cliente/lista']);
-        },
-        error: (errorResponse) => {
-          this.listaErros = errorResponse.error.erros
-          console.log(errorResponse);
-          this.snackBar.open("Erro ao SALVAR Cliente verifique a lista de erros.", "ERRO!", {
-            duration: 2000
-          });
-          this.mostraProgresso = false;
-        }
-      });
+
+
   }
 
 
   atualizarCliente() {
-    this.mostraProgresso = true;
-    if (this.cliente.cep) {
-      this.cliente.cep = this.cliente.cep.replaceAll("-", "");
+
+    if (this.formularioValido()) {
+      this.mostraProgresso = true;
+
+      this.passarInfoFormParaCliente();
+
+      if (this.cliente.cep) {
+        this.cliente.cep = this.cliente.cep.replaceAll("-", "");
+      }
+      this.clienteService
+        .atualizarCliente(this.cliente).subscribe({
+          next: (resposta) => {
+            this.listaErros = [];
+            this.mostraProgresso = false;
+            this.cliente = resposta;
+            this.snackBar.open("SUCESSO ao Atualizar Cliente", "SUCESSO!", {
+              duration: 3000
+            });
+            this.router.navigate(['cliente/mapa-edit/' + this.cliente.cnpj]);
+          },
+          error: (errorResponse) => {
+            this.listaErros = errorResponse.error.erros
+            console.log(errorResponse);
+            this.snackBar.open("Erro ao Atualizar Cliente verifique a lista de erros.", "ERRO!", {
+              duration: 2000
+            });
+            this.mostraProgresso = false;
+          }
+        });
+
     }
-    this.clienteService
-      .atualizarCliente(this.cliente).subscribe({
-        next: (resposta) => {
-          this.listaErros = [];
-          this.mostraProgresso = false;
-          this.cliente = resposta;
-          this.snackBar.open("SUCESSO ao Atualizar Cliente", "SUCESSO!", {
-            duration: 3000
-          });
-          this.router.navigate(['cliente/mapa-edit/' + this.cliente.cnpj]);
-        },
-        error: (errorResponse) => {
-          this.listaErros = errorResponse.error.erros
-          console.log(errorResponse);
-          this.snackBar.open("Erro ao Atualizar Cliente verifique a lista de erros.", "ERRO!", {
-            duration: 2000
-          });
-          this.mostraProgresso = false;
-        }
-      });
+
   }
 
+
+  ufValidator(control: AbstractControl): { [key: string]: any } | null {
+    const value = control.value;
+    if (!value || value.length !== 2 || !/^[a-zA-Z]+$/.test(value)) {
+      return { 'ufInvalida': true };
+    }
+    return null;
+  }
+
+  private passarInfoFormParaCliente() {
+    this.cliente.id = this.formulario.controls['id'].value;
+    this.cliente.nome = this.formulario.controls['nome'].value;
+    this.cliente.cnpj = this.formulario.controls['cnpj'].value;
+    this.cliente.cep = this.formulario.controls['cep'].value;
+    this.cliente.logradouro = this.formulario.controls['logradouro'].value;
+    this.cliente.bairro = this.formulario.controls['bairro'].value;
+    this.cliente.localidade = this.formulario.controls['localidade'].value;
+    this.cliente.uf = this.formulario.controls['uf'].value;
+    this.cliente.latitude = this.formulario.controls['latitude'].value;
+    this.cliente.longitude = this.formulario.controls['longitude'].value;
+  }
 
 }

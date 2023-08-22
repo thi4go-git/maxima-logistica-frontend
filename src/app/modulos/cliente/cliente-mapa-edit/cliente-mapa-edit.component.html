@@ -20,7 +20,7 @@
 </div>
 
 <div class="container">
-    <form #arquivoForm="ngForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
 
         <div id="row">
             <div id="col-md-12">
@@ -35,15 +35,14 @@
             <mat-form-field class="full-width" appearance="fill">
                 <mat-icon matSuffix>fingerprint</mat-icon>
                 <mat-label> <b>ID:</b> </mat-label>
-                <input matInput placeholder="Informe o ID:" name="id" [(ngModel)]="cliente.id" disabled="true" />
+                <input formControlName="id" matInput placeholder="Informe o ID:" />
             </mat-form-field>
 
             <div *ngIf="cliente.id">
                 <mat-form-field class="full-width" appearance="fill">
                     <mat-icon matSuffix>fingerprint</mat-icon>
                     <mat-label> <b>CNPJ:</b> </mat-label>
-                    <input matInput placeholder="Informe o CNPJ:" name="cnpj" [(ngModel)]="cliente.cnpj"
-                        disabled="true" />
+                    <input formControlName="cnpj" matInput placeholder="Informe o CNPJ:" />
                 </mat-form-field>
             </div>
 
@@ -51,24 +50,24 @@
                 <mat-form-field class="full-width" appearance="fill">
                     <mat-icon matSuffix>fingerprint</mat-icon>
                     <mat-label> <b>CNPJ:</b> </mat-label>
-                    <input matInput placeholder="Informe o CNPJ:" name="cnpj" [(ngModel)]="cliente.cnpj"
-                        disabled="false" />
+                    <input formControlName="cnpj" matInput placeholder="Informe o CNPJ:" />
                 </mat-form-field>
             </div>
 
             <mat-form-field class="full-width" appearance="fill">
                 <mat-icon matSuffix>confirmation_number</mat-icon>
                 <mat-label> <b>Nome</b> </mat-label>
-                <input matInput placeholder="Informe o Nome do Cliente" name="nome" [(ngModel)]="cliente.nome" />
+                <input formControlName="nome" matInput placeholder="Informe o Nome do Cliente" />
             </mat-form-field>
 
             <div>
                 <mat-form-field appearance="fill">
                     <mat-icon matSuffix>confirmation_number</mat-icon>
                     <mat-label> <b>CEP</b> </mat-label>
-                    <input matInput placeholder="Informe o CEP do Cliente" name="cep" [(ngModel)]="cliente.cep" />
+                    <input formControlName="cep" matInput placeholder="Informe o CEP do Cliente" />
                 </mat-form-field>
-                <button type="button" class="btn btn-success espaco" (click)="pesquisarEnderecoViaCep(cliente.cep)">
+                <button type="button" class="btn btn-success espaco" (click)="pesquisarEnderecoViaCep()"
+                    [disabled]="!formulario.controls['cep'].valid">
                     <i class="fa fa-save"></i>
                     <mat-icon>search</mat-icon>
                     Pesquisar VIA CEP
@@ -78,27 +77,25 @@
             <mat-form-field class="full-width" appearance="fill">
                 <mat-icon matSuffix>confirmation_number</mat-icon>
                 <mat-label> <b>Logradouro</b> </mat-label>
-                <input matInput placeholder="Informe o logradouro do Cliente" name="logradouro"
-                    [(ngModel)]="cliente.logradouro" />
+                <input formControlName="logradouro" matInput placeholder="Informe o logradouro do Cliente" />
             </mat-form-field>
 
             <mat-form-field class="full-width" appearance="fill">
                 <mat-icon matSuffix>confirmation_number</mat-icon>
                 <mat-label> <b>Bairro</b> </mat-label>
-                <input matInput placeholder="Informe o bairro do Cliente" name="bairro" [(ngModel)]="cliente.bairro" />
+                <input formControlName="bairro" matInput placeholder="Informe o bairro do Cliente" />
             </mat-form-field>
 
             <mat-form-field class="full-width" appearance="fill">
                 <mat-icon matSuffix>confirmation_number</mat-icon>
                 <mat-label> <b>Localidade</b> </mat-label>
-                <input matInput placeholder="Informe a localidade do Cliente" name="localidade"
-                    [(ngModel)]="cliente.localidade" />
+                <input formControlName="localidade" matInput placeholder="Informe a localidade do Cliente" />
             </mat-form-field>
 
             <mat-form-field class="full-width" appearance="fill">
                 <mat-icon matSuffix>confirmation_number</mat-icon>
                 <mat-label> <b>UF</b> </mat-label>
-                <input matInput placeholder="Informe a uf do Cliente" name="uf" [(ngModel)]="cliente.uf" />
+                <input formControlName="uf" matInput placeholder="Informe a uf do Cliente" />
             </mat-form-field>
 
             <div class="mapa">
@@ -111,15 +108,13 @@
                             <mat-form-field class="espaco" appearance="fill">
                                 <mat-icon matSuffix>fingerprint</mat-icon>
                                 <mat-label> <b>Latitude</b> </mat-label>
-                                <input matInput placeholder="Informe a latitude:" name="latitude"
-                                    [(ngModel)]="cliente.latitude" disabled="true" />
+                                <input formControlName="latitude" matInput placeholder="Informe a latitude:" />
                             </mat-form-field>
 
                             <mat-form-field class="espaco" appearance="fill">
                                 <mat-icon matSuffix>fingerprint</mat-icon>
                                 <mat-label> <b>Longitude:</b> </mat-label>
-                                <input matInput placeholder="Informe a longitude:" name="longitude"
-                                    [(ngModel)]="cliente.longitude" disabled="true" />
+                                <input formControlName="longitude" matInput placeholder="Informe a longitude:" />
                             </mat-form-field>
 
                             <hr />
@@ -131,15 +126,16 @@
                                     <mat-form-field class="full-width" appearance="fill">
                                         <mat-icon matSuffix>confirmation_number</mat-icon>
                                         <mat-label> <b>Endereço / CEP </b> </mat-label>
-                                        <input matInput placeholder="Digite o Endereço ex: Rua ubauda 236 Setor Central"
-                                            name="enderecoPesquisar" [(ngModel)]="enderecoPesquisar" />
+                                        <input matInput formControlName="enderecoPesquisa"
+                                            placeholder="Digite o Endereço ex: Rua ubauda 236 Setor Central" />
                                     </mat-form-field>
 
                                 </mat-card-subtitle>
                             </mat-card-header>
 
                             <button type="button" class="btn btn-success espaco"
-                                (click)="obterNovaCoordenadasDoEndereco()">
+                                (click)="obterNovaCoordenadasDoEndereco()"
+                                [disabled]="!formulario.controls['enderecoPesquisa'].valid">
                                 <i class="fa fa-save"></i>
                                 <mat-icon>search</mat-icon>
                                 Buscar Nova coordenada
@@ -150,7 +146,7 @@
                         </mat-card-subtitle>
                     </mat-card-header>
 
-                    <button type="button" class="btn btn-success espaco" (click)="abrirEnderecoClienteNoMapa(cliente)">
+                    <button type="button" class="btn btn-success espaco" (click)="abrirEnderecoClienteNoMapa()">
                         <i class="fa fa-save"></i>
                         <mat-icon>search</mat-icon>
                         Visualizar Coordenadas no MAPA
@@ -168,7 +164,8 @@
             </div>
         </div>
         <br>
-        <button type="submit" class="btn btn-success espaco">
+        <button type="submit" class="btn btn-success espaco" 
+        [disabled]="!formularioValido()">
             <i class="fa fa-save"></i>
             <mat-icon>save</mat-icon>
             <div *ngIf="cliente.id">
