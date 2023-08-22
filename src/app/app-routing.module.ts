@@ -11,6 +11,7 @@ const routes: Routes = [
     loadChildren: () => import('./modulos/cliente/cliente.module').then(m => m.ClienteModule)
   },
   { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent }
 ];
 
