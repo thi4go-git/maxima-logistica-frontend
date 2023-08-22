@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     MatCardModule,
     MatIconModule,
     MatToolbarModule,
@@ -49,6 +51,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   ], exports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     MatCardModule,
     MatIconModule,
     MatToolbarModule,
