@@ -6,15 +6,16 @@
 
                 <a class="nav-link active">
                     <mat-icon>home</mat-icon>
-                    Início
                 </a>
 
                 <div class="sb-sidenav-menu-heading"> Versão: {{versao}} </div>
-                <a class="nav-link active" routerLink="/cliente/cadastro" [routerLinkActive]="['rota-ativa']">
+                <a class="nav-link active" routerLink="/cliente/cadastro" [routerLinkActive]="['rota-ativa-css']"
+                    [routerLinkActiveOptions]="{exact: true}">
                     <mat-icon>description</mat-icon>
                     Cadastro
                 </a>
-                <a class="nav-link active" routerLink="/cliente/lista" [routerLinkActive]="['rota-ativa']">
+                <a class="nav-link active" routerLink="/cliente/lista" [routerLinkActive]="['rota-ativa-css']"
+                    [routerLinkActiveOptions]="{exact: true}">
                     <mat-icon>person_outline</mat-icon>
                     Clientes
                 </a>
