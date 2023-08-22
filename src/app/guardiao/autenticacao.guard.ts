@@ -21,12 +21,9 @@ export class AutenticacaoGuard implements CanActivate {
 
     if (autenticado) {
       return true;
-    } else {
-      this.snackBar.open("Faça o Login para continuar!", "OBS!", {
-        duration: 2000
-      });
+    } else { 
       localStorage.clear();
-      this.router.navigate(['/login']);
+      this.router.navigateByUrl('/login');
       return false;
     }
   }
