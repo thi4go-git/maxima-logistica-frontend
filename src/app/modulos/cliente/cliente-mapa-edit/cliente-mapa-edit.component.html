@@ -42,7 +42,8 @@
                 <mat-form-field class="full-width" appearance="fill">
                     <mat-icon matSuffix>fingerprint</mat-icon>
                     <mat-label> <b>CNPJ:</b> </mat-label>
-                    <input formControlName="cnpj" matInput placeholder="Informe o CNPJ:" />
+                    <input formControlName="cnpj" matInput placeholder="Informe o CNPJ:" type="text"
+                    mask="00.000.000/0000-00" [showMaskTyped]="true"/>
                 </mat-form-field>
             </div>
 
@@ -65,7 +66,8 @@
                 <mat-form-field appearance="fill">
                     <mat-icon matSuffix>confirmation_number</mat-icon>
                     <mat-label> <b>CEP</b> </mat-label>
-                    <input formControlName="cep" matInput placeholder="Informe o CEP do Cliente" />
+                    <input formControlName="cep" matInput placeholder="Informe o CEP do Cliente"  type="text"
+                    mask="00000-000" [showMaskTyped]="true"/>
                 </mat-form-field>
                 <button type="button" class="btn btn-success espaco" (click)="pesquisarEnderecoViaCep()"
                     [disabled]="!formulario.controls['cep'].valid">

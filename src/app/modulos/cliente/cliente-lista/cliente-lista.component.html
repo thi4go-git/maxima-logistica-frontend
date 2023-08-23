@@ -23,8 +23,8 @@
                     <mat-form-field appearance="fill" class="espaco-filter">
                         <mat-icon matSuffix>fingerprint</mat-icon>
                         <mat-label> <b>CNPJ:</b> </mat-label>
-                        <input matInput placeholder="Cliente" name="cnpj" [(ngModel)]="clienteFilter.cnpj" 
-                        type="text" mask="00.000.000/0000-00" [showMaskTyped]="true" />
+                        <input matInput placeholder="Cliente" name="cnpj" [(ngModel)]="clienteFilter.cnpj" type="text"
+                            mask="00.000.000/0000-00" [showMaskTyped]="true" />
                     </mat-form-field>
                     <mat-form-field appearance="fill" class="espaco-filter">
                         <mat-icon matSuffix>fingerprint</mat-icon>
@@ -70,12 +70,12 @@
 
         <ng-container matColumnDef="cnpj">
             <th mat-header-cell *matHeaderCellDef> CNPJ </th>
-            <td mat-cell *matCellDef="let cliente"> {{cliente.cnpj}} </td>
+            <td mat-cell *matCellDef="let cliente"> {{ cliente.cnpj | mask: 'CPF_CNPJ' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="cep">
             <th mat-header-cell *matHeaderCellDef> CEP </th>
-            <td mat-cell *matCellDef="let cliente"> {{cliente.endereco.cep}} </td>
+            <td mat-cell *matCellDef="let cliente"> {{ cliente.endereco.cep | mask: '00000-000' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="logradouro">
