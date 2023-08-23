@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from 'src/app/app-routing.module';
@@ -17,6 +16,7 @@ import { EnderecoService } from 'src/app/servicos/endereco.service';
 import { ClienteModule } from '../cliente/cliente.module';
 import { KeycloakService } from 'src/app/servicos/keycloak.service';
 import { TokenInterceptor } from 'src/app/interceptors/token.interceptor';
+
 
 
 @NgModule({

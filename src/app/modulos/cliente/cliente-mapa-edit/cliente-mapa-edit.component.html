@@ -50,7 +50,8 @@
                 <mat-form-field class="full-width" appearance="fill">
                     <mat-icon matSuffix>fingerprint</mat-icon>
                     <mat-label> <b>CNPJ:</b> </mat-label>
-                    <input formControlName="cnpj" matInput placeholder="Informe o CNPJ:" />
+                    <input formControlName="cnpj" matInput placeholder="Informe o CNPJ:" type="text"
+                        mask="00.000.000/0000-00" [showMaskTyped]="true" />
                 </mat-form-field>
             </div>
 
@@ -164,8 +165,7 @@
             </div>
         </div>
         <br>
-        <button type="submit" class="btn btn-success espaco" 
-        [disabled]="!formularioValido()">
+        <button type="submit" class="btn btn-success espaco" [disabled]="!formularioValido()">
             <i class="fa fa-save"></i>
             <mat-icon>save</mat-icon>
             <div *ngIf="cliente.id">

@@ -23,7 +23,8 @@
                     <mat-form-field appearance="fill" class="espaco-filter">
                         <mat-icon matSuffix>fingerprint</mat-icon>
                         <mat-label> <b>CNPJ:</b> </mat-label>
-                        <input matInput placeholder="Cliente" name="cnpj" [(ngModel)]="clienteFilter.cnpj" />
+                        <input matInput placeholder="Cliente" name="cnpj" [(ngModel)]="clienteFilter.cnpj" 
+                        type="text" mask="00.000.000/0000-00" [showMaskTyped]="true" />
                     </mat-form-field>
                     <mat-form-field appearance="fill" class="espaco-filter">
                         <mat-icon matSuffix>fingerprint</mat-icon>

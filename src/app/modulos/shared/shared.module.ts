@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 
 @NgModule({
@@ -26,6 +27,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     FormsModule,
     RouterModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
     MatCardModule,
     MatIconModule,
     MatToolbarModule,
@@ -53,6 +56,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     FormsModule,
     RouterModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
     MatCardModule,
     MatIconModule,
     MatToolbarModule,
@@ -75,6 +80,8 @@ import { RouterModule } from '@angular/router';
     MatPaginatorModule,
     MatCheckboxModule,
     ReactiveFormsModule
+  ], providers: [
+    provideNgxMask(),
   ]
 })
 export class SharedModule { }
