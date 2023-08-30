@@ -1,12 +1,10 @@
 import { TestBed } from "@angular/core/testing";
 import { Router } from "@angular/router";
-import { RouterTestingModule } from "@angular/router/testing";
 import { AutenticacaoGuard } from "./autenticacao.guard";
 import { KeycloakService } from "../servicos/keycloak.service";
-import { CoreModule } from "../modulos/core/core.module";
 
 
-fdescribe('AutenticacaoGuard', () => {
+describe('AutenticacaoGuard', () => {
 
     let guard: AutenticacaoGuard;
     let keycloakServiceMock: jasmine.SpyObj<KeycloakService>;
@@ -55,7 +53,5 @@ fdescribe('AutenticacaoGuard', () => {
         });
 
     });
-
-
 
 });

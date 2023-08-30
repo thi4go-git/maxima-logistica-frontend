@@ -28,7 +28,7 @@ export class KeycloakService {
       'Authorization': 'Basic ' + btoa(this.cliId + ':' + this.cliSecret),
       'Content-Type': 'application/x-www-form-urlencoded'
     };
-    return this.http.post(this.urlToken, params.toString(), { headers });
+    return this.http.post<any>(this.urlToken, params.toString(), { headers });
   }
 
   isAuthenticated(): boolean {

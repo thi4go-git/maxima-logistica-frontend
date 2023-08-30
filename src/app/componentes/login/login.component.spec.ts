@@ -54,6 +54,17 @@ describe('LoginComponent', () => {
     });
 
     describe('Teste onInit', () => {
+        it('Deve Chamar o método Logar', () => {
+            loginComponent.username = 'teste'
+            loginComponent.password = 'teste'
+
+            //Mock obter token
+            mockKeycloakService.obterToken.and.returnValue(of(true));
+            loginComponent.onSubmit();
+
+            expect(mockKeycloakService.obterToken).toHaveBeenCalledOnceWith(loginComponent.username, loginComponent.password);
+
+        });
         it('Deve mostrar mensagem para informar credenciais', () => {
             loginComponent.username = ''
             loginComponent.password = ''
@@ -89,7 +100,6 @@ describe('LoginComponent', () => {
             expect(loginComponent.erros).toEqual(msgErroEsperado);
         });
         it('Deve obter o token com sucesso e Logar', () => {
-
             // se o retorno é Observable necessita do returnValue(of(   'of'
             mockKeycloakService.obterToken.and.returnValue(of({ access_token: 'meu_token_teste' }));
 
