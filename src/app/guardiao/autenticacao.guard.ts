@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { KeycloakService } from '../servicos/keycloak.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Injectable({ providedIn: 'root' })
@@ -10,8 +9,7 @@ export class AutenticacaoGuard implements CanActivate {
 
   constructor(
     private keycloakService: KeycloakService,
-    private router: Router,
-    private snackBar: MatSnackBar
+    private router: Router
   ) { }
 
 
@@ -23,7 +21,7 @@ export class AutenticacaoGuard implements CanActivate {
       return true;
     } else { 
       localStorage.clear();
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('/login');// navigateByUrl recarrega a Pág.
       return false;
     }
   }
